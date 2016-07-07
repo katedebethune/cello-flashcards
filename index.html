@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Note Tester</title>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<style>
+	#container {
+		display: inline-block;
+	}
+	#note {
+          background: red;
+          border: 1px solid #000;
+          /* background-image: url(a_note.png); */
+          width: 170px; height: 230px;
+          background-repeat: no-repeat; 
+          float: left;
+    }
+
+   #answer { 
+      background: green;
+       border: 1px solid #000;
+       /* background-image: url(a_answer.png); */
+       width: 170px; height: 230px;
+       background-repeat: no-repeat; 
+       float: right;
+   } 
+   #yourGuess {
+   		background: blue;
+   		border: 1px solid #000;
+   		width: 170px; height: 230px;
+   		float: right;
+   }
+
+   .clearFloat {
+   		clear: both;
+   }
+   </style>
+   <script>
+   	/* JQuery onready function for events */
+  	var currentNote;
+  	var currentNoteImg;
+  	var currentAnswerImg;
+  	var currentGuessString;
+  	var currentGuessFinger;
+  	var currentGuess;
+  	/* $(document).ready(function() { */
+  	$(function() {
+	    //$( "#draggable" ).draggable();
+	    //$( "#tabs" ).tabs();
+
+	    $('#showAnswer').click(function(){
+	        //$(".answer").css("display", "block");
+	        //$("#answer").css("background-image", "url(" + currentAnswerImg + ")");
+	        //console.log("Inside showAnswer: currentNoteIMg is" + currentNoteImg + " and currentAnswerImg is " + currentAnswerImg);
+	        //updateAnswer();
+	        //$("#answer").css("background-image", "url(" + currentAnswerImg + ")");
+	        $( "<div id='answer'></div>" ).insertAfter( "#note" );
+	        $("#answer").css("background-image", "url(" + currentAnswerImg + ")");
+	        return false;
+	     });
+
+	    $('#getNewNote').click(function(){
+	        $( "#answer" ).remove();
+	        selectNote();
+	        $("#note").css("background-image", "url(" + currentNoteImg + ")");
+	        $( "#yourGuess p" ).empty();
+
+	        return false;
+	     });
+
+	   $("input:radio[name=stringNameGroup]").click(function() {
+    		currentGuessString = $(this).val();
+    		console.log(currentGuessString);
+    		//alert(currentGuessString);
+    		$( "#yourGuess" ).append( "<p>You guessed the " + currentGuessString + " string</p>" );
+    		return false;
+    	});
+
+	   $("input:radio[name=fingerNumberGroup]").click(function() {
+    		currentGuessFinger = $(this).val();
+    		console.log(currentGuessFinger);
+    		//alert(currentGuessFinger);
+    		$( "#yourGuess" ).append( "<p>You guessed " + currentGuessFinger + "</p>" );
+    		assembleGuess();
+    		return false;
+    	});
+
+	
+	    $( "#strName" ).buttonset();
+	    $( "#finger" ).buttonset();
+
+    });
+
+
+
+  	function updateAnswer() {
+  		alert("inside update answer");
+  		$("#answer").css("background-image", "url(" + currentAnswerImg + ")");
+  	}
+
+  	//$( "<p>Test</p>" ).insertAfter( ".inner" );
+
+  	function selectNote() {
+    	var notes = [ ["c2", "C0"], ["d2", "C1"], ["e2", "C3"], ["f2", "C4"], ["g2", "G0"], ["a2", "G1"], ["b2", "G3"], ["c3", "G4"], ["d3","D0"] ["e3","D1"], ["f3","D2"], ["g3","D4"], ["a3","A0"], ["b3","A1"], ["c4", "A2"], ["d4", "A4"], ["sharp", "sharp"], ["flat","flat"] ];
+    	var i = Math.floor((Math.random() * notes.length));
+    	currentNote = notes[i];
+    	console.log(i + " " + currentNote);
+    	/* Next: set the css for .note and .answer for this round */
+    	console.log("url(" + notes[i][0] + "_note.png)");
+    	currentNoteImg = notes[i][0] + "_note.png";
+    	console.log(currentNoteImg);
+    	currentAnswerImg = notes[i][0] + "_answer.png";
+    	console.log(currentAnswerImg);
+    	//$("#note").css("background-image", "url(" + notes[i] + "_note.png)");
+    	//$("#answer").css("background-image", "url(" + notes[i] + "_answer.png)");
+  	}
+
+  	function assembleGuess(){
+  		if ( currentGuessString ) {
+  			currentGuess = currentGuessString + currentGuessFinger;
+  			//alert("inside assembleGuess" + currentGuess);
+  			compareGuess();
+  		}
+  		else {
+  			alert ("Please select a string");
+  		}
+  	}
+
+  	function compareGuess() {
+  			if ( currentGuess ) {
+  				if (currentGuess == currentNote[1]){
+  					//alert("You guessed correctly!!");
+  					$( "#yourGuess" ).append( "<p><strong>Huzzah! " + currentNote[1] + " is correct!! That's " + currentNote[0] + "</strong></p>" );
+  				}
+  				else {
+  					alert("that's not quite right - try again");
+  					currentGuessString = null;
+  					currentGuessFinger = null;
+  					$( "#yourGuess p" ).empty();
+  				}
+  			}
+  	}
+
+  	
+  </script>
+</head>
+<body>
+<div id="container">
+	<div id='note' class="ui-widget-content"></div>
+	<div id='yourGuess'></div>
+</div>
+<div class="clearFloat">
+	<form>
+	<!-- <form action="#" method="get" id="answerForm" onSubmit="processAnswer()"> -->
+  		<!-- <div id="strName"> -->
+  		<label for="strName">Select a string: </label>
+    		<input type="radio"  class="strName" name="stringNameGroup" value="A">A
+    		<input type="radio"  class="strName" name="stringNameGroup"  value="D">D
+    		<input type="radio"  class="strName" name="stringNameGroup" value="G">G
+    		<input type="radio"  class="strName" name="stringNameGroup" value="C">C
+		<!-- </div> -->
+    		<!--
+    		<label for="clef">bass or treble?</label>
+	         <input type="radio" class="clef" value="treble" name="clefRadioGroup">Treble
+	         <input type="radio" class="clef" value="bass" name="clefRadioGroup">Bass<br> 
+
+
+    		-->
+  		<!-- <div id="finger"> -->
+	  		<label for ="finger">select a finger: </label>
+	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="0">0
+	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="1">1
+	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="2">2
+	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="3">3
+	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="4">4
+	    <!-- </div> -->
+  		<!-- <button type="submit">Go</button> -->
+	</form>
+	<input type="button" id="getNewNote" value="Show Note" /> 
+	
+	<input type="button" id="showAnswer" value="Show Answer" />
+</div>
+	
+</body>
+</html>
