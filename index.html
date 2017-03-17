@@ -45,6 +45,7 @@
   	var currentAnswerImg;
   	var currentGuessString;
   	var currentGuessFinger;
+    var currentGuessNote;
   	var currentGuess;
   	/* $(document).ready(function() { */
   	$(function() {
@@ -84,13 +85,23 @@
     		console.log(currentGuessFinger);
     		//alert(currentGuessFinger);
     		$( "#yourGuess" ).append( "<p>You guessed " + currentGuessFinger + "</p>" );
-    		assembleGuess();
+    		//sassembleGuess();
     		return false;
     	});
+
+     $("input:radio[name=noteNameGroup]").click(function() {
+        currentGuessNote = $(this).val();
+        console.log(currentGuessNote);
+        //alert(currentGuessFinger);
+        $( "#yourGuess" ).append( "<p>You guessed " + currentGuessNote + "</p>" );
+        assembleGuess();
+        return false;
+      });
 
 	
 	    $( "#strName" ).buttonset();
 	    $( "#finger" ).buttonset();
+      $( '#noteName').buttonset();
 
     });
 
@@ -118,6 +129,7 @@
     	//$("#answer").css("background-image", "url(" + notes[i] + "_answer.png)");
   	}
 
+    /*
   	function assembleGuess(){
   		if ( currentGuessString ) {
   			currentGuess = currentGuessString + currentGuessFinger;
@@ -128,8 +140,26 @@
   			alert ("Please select a string");
   		}
   	}
+    */
 
-  	function compareGuess() {
+    function assembleGuess(){
+      if (!currentGuessString) {
+        alert ("Please select a string");
+      }
+      if ( !currentGuessFinger ) {
+        alert ("Please select a finger");
+      }
+      if ( !currentGuessNote) {
+        alert ("Please select a note");
+      }
+      currentGuess = currentGuessString + currentGuessFinger + currentGuessNote;
+      alert(currentGuess);
+      compareGuess();
+    }
+    //var res = str.charAt(0);
+    //var res = str.slice(1, 5); 
+  	/*
+    function compareGuess() {
   			if ( currentGuess ) {
   				if (currentGuess == currentNote[1]){
   					//alert("You guessed correctly!!");
@@ -142,7 +172,27 @@
   					$( "#yourGuess p" ).empty();
   				}
   			}
-  	}
+  	} */
+
+    function compareGuess() {
+        if ( currentGuess ) {
+          //alert(currentGuess.slice(0,2));
+          alert(currentGuess.charAt(2));
+          //if (currentGuess.slice(0,1) == currentNote[1] && currentGuess.charAt(2) == currentNote[0].charAt(0)){
+          if (currentGuess.slice(0,2) == currentNote[1] && currentGuess.charAt(2) == currentNote[0].charAt(0)){
+            //alert("You guessed correctly!!");
+            $( "#yourGuess" ).append( "<p><strong>Huzzah! " + currentNote[1] + " is correct!! That's " + currentNote[0] + "</strong></p>" );
+          }
+          else {
+            alert("that's not quite right - try again");
+            currentGuessString = null;
+            currentGuessFinger = null;
+            currentGuessNote = null;
+            $( "#yourGuess p" ).empty();
+          }
+        }
+    } 
+
 
   	
   </script>
@@ -162,22 +212,27 @@
     		<input type="radio"  class="strName" name="stringNameGroup" value="G">G
     		<input type="radio"  class="strName" name="stringNameGroup" value="C">C
 		<!-- </div> -->
-    		<!--
-    		<label for="clef">bass or treble?</label>
-	         <input type="radio" class="clef" value="treble" name="clefRadioGroup">Treble
-	         <input type="radio" class="clef" value="bass" name="clefRadioGroup">Bass<br> 
-
-
-    		-->
+    	<br />
   		<!-- <div id="finger"> -->
-	  		<label for ="finger">select a finger: </label>
+	  		<label for ="finger">Select a finger: </label>
 	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="0">0
 	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="1">1
 	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="2">2
 	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="3">3
 	    		<input type="radio" class="fingerNumber" name="fingerNumberGroup" value="4">4
 	    <!-- </div> -->
-  		<!-- <button type="submit">Go</button> -->
+      <br />
+      <!-- <div id="noteName"> -->
+        <label for ="noteName">What's the note name? </label>
+          <input type="radio" class="noteName" name="noteNameGroup" value="a">A
+          <input type="radio" class="noteName" name="noteNameGroup" value="b">B
+          <input type="radio" class="noteName" name="noteNameGroup" value="c">C
+          <input type="radio" class="noteName" name="noteNameGroup" value="d">D
+          <input type="radio" class="noteName" name="noteNameGroup" value="e">E
+          <input type="radio" class="noteName" name="noteNameGroup" value="f">F
+          <input type="radio" class="noteName" name="noteNameGroup" value="g">G
+          
+      <!-- </div> -->
 	</form>
 	<input type="button" id="getNewNote" value="Show Note" /> 
 	
