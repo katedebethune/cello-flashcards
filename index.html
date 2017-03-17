@@ -11,7 +11,7 @@
 		display: inline-block;
 	}
 	#note {
-          background: red;
+          background: pink;
           border: 1px solid #000;
           /* background-image: url(a_note.png); */
           width: 170px; height: 230px;
@@ -20,7 +20,7 @@
     }
 
    #answer { 
-      background: green;
+      background: lightgreen;
        border: 1px solid #000;
        /* background-image: url(a_answer.png); */
        width: 170px; height: 230px;
@@ -28,7 +28,7 @@
        float: right;
    } 
    #yourGuess {
-   		background: blue;
+   		background: lightblue;
    		border: 1px solid #000;
    		width: 170px; height: 230px;
    		float: right;
@@ -47,23 +47,18 @@
   	var currentGuessFinger;
     var currentGuessNote;
   	var currentGuess;
-  	/* $(document).ready(function() { */
-  	$(function() {
-	    //$( "#draggable" ).draggable();
-	    //$( "#tabs" ).tabs();
 
+  	$(function() {
+
+      /* show answer */
 	    $('#showAnswer').click(function(){
-	        //$(".answer").css("display", "block");
-	        //$("#answer").css("background-image", "url(" + currentAnswerImg + ")");
-	        //console.log("Inside showAnswer: currentNoteIMg is" + currentNoteImg + " and currentAnswerImg is " + currentAnswerImg);
-	        //updateAnswer();
-	        //$("#answer").css("background-image", "url(" + currentAnswerImg + ")");
 	        $( "<div id='answer'></div>" ).insertAfter( "#note" );
 	        $("#answer").css("background-image", "url(" + currentAnswerImg + ")");
 	        return false;
 	     });
 
-	    $('#getNewNote').click(function(){
+	    /* get a new note to guess */
+      $('#getNewNote').click(function(){
 	        $( "#answer" ).remove();
 	        selectNote();
 	        $("#note").css("background-image", "url(" + currentNoteImg + ")");
@@ -72,10 +67,10 @@
 	        return false;
 	     });
 
+     /* Radio button Event functions */
 	   $("input:radio[name=stringNameGroup]").click(function() {
     		currentGuessString = $(this).val();
     		console.log(currentGuessString);
-    		//alert(currentGuessString);
     		$( "#yourGuess" ).append( "<p>You guessed the " + currentGuessString + " string</p>" );
     		return false;
     	});
@@ -83,16 +78,13 @@
 	   $("input:radio[name=fingerNumberGroup]").click(function() {
     		currentGuessFinger = $(this).val();
     		console.log(currentGuessFinger);
-    		//alert(currentGuessFinger);
     		$( "#yourGuess" ).append( "<p>You guessed " + currentGuessFinger + "</p>" );
-    		//sassembleGuess();
     		return false;
     	});
 
      $("input:radio[name=noteNameGroup]").click(function() {
         currentGuessNote = $(this).val();
         console.log(currentGuessNote);
-        //alert(currentGuessFinger);
         $( "#yourGuess" ).append( "<p>You guessed " + currentGuessNote + "</p>" );
         assembleGuess();
         return false;
@@ -105,42 +97,23 @@
 
     });
 
-
-
   	function updateAnswer() {
   		alert("inside update answer");
   		$("#answer").css("background-image", "url(" + currentAnswerImg + ")");
   	}
 
-  	//$( "<p>Test</p>" ).insertAfter( ".inner" );
 
   	function selectNote() {
-    	var notes = [ ["c2", "C0"], ["d2", "C1"], ["e2", "C3"], ["f2", "C4"], ["g2", "G0"], ["a2", "G1"], ["b2", "G3"], ["c3", "G4"], ["d3","D0"] ["e3","D1"], ["f3","D2"], ["g3","D4"], ["a3","A0"], ["b3","A1"], ["c4", "A2"], ["d4", "A4"], ["sharp", "sharp"], ["flat","flat"] ];
+      var notes = [ ["c2", "C0"], ["d2", "C1"], ["e2", "C3"], ["f2", "C4"], ["g2", "G0"], ["a2", "G1"], ["b2", "G3"], ["c3", "G4"], ["d3","D0"] ["e3","D1"], ["f3","D2"], ["g3","D4"], ["a3","A0"], ["b3","A1"], ["c4", "A2"], ["d4", "A4"] ];
     	var i = Math.floor((Math.random() * notes.length));
     	currentNote = notes[i];
     	console.log(i + " " + currentNote);
-    	/* Next: set the css for .note and .answer for this round */
     	console.log("url(" + notes[i][0] + "_note.png)");
     	currentNoteImg = notes[i][0] + "_note.png";
     	console.log(currentNoteImg);
     	currentAnswerImg = notes[i][0] + "_answer.png";
     	console.log(currentAnswerImg);
-    	//$("#note").css("background-image", "url(" + notes[i] + "_note.png)");
-    	//$("#answer").css("background-image", "url(" + notes[i] + "_answer.png)");
   	}
-
-    /*
-  	function assembleGuess(){
-  		if ( currentGuessString ) {
-  			currentGuess = currentGuessString + currentGuessFinger;
-  			//alert("inside assembleGuess" + currentGuess);
-  			compareGuess();
-  		}
-  		else {
-  			alert ("Please select a string");
-  		}
-  	}
-    */
 
     function assembleGuess(){
       if (!currentGuessString) {
@@ -156,32 +129,11 @@
       alert(currentGuess);
       compareGuess();
     }
-    //var res = str.charAt(0);
-    //var res = str.slice(1, 5); 
-  	/*
-    function compareGuess() {
-  			if ( currentGuess ) {
-  				if (currentGuess == currentNote[1]){
-  					//alert("You guessed correctly!!");
-  					$( "#yourGuess" ).append( "<p><strong>Huzzah! " + currentNote[1] + " is correct!! That's " + currentNote[0] + "</strong></p>" );
-  				}
-  				else {
-  					alert("that's not quite right - try again");
-  					currentGuessString = null;
-  					currentGuessFinger = null;
-  					$( "#yourGuess p" ).empty();
-  				}
-  			}
-  	} */
 
     function compareGuess() {
         if ( currentGuess ) {
-          //alert(currentGuess.slice(0,2));
-          alert(currentGuess.charAt(2));
-          //if (currentGuess.slice(0,1) == currentNote[1] && currentGuess.charAt(2) == currentNote[0].charAt(0)){
           if (currentGuess.slice(0,2) == currentNote[1] && currentGuess.charAt(2) == currentNote[0].charAt(0)){
-            //alert("You guessed correctly!!");
-            $( "#yourGuess" ).append( "<p><strong>Huzzah! " + currentNote[1] + " is correct!! That's " + currentNote[0] + "</strong></p>" );
+            $( "#yourGuess" ).append( "<p><strong>Hooray! " + currentNote[1].charAt(1) + " on " + currentNote[1].charAt(0) + " is correct!! That's " + currentNote[0].charAt(0).toUpperCase() + "</strong></p>" );
           }
           else {
             alert("that's not quite right - try again");
