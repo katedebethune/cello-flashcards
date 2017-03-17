@@ -126,14 +126,13 @@
         alert ("Please select a note");
       }
       currentGuess = currentGuessString + currentGuessFinger + currentGuessNote;
-      alert(currentGuess);
       compareGuess();
     }
 
     function compareGuess() {
         if ( currentGuess ) {
           if (currentGuess.slice(0,2) == currentNote[1] && currentGuess.charAt(2) == currentNote[0].charAt(0)){
-            $( "#yourGuess" ).append( "<p><strong>Hooray! " + currentNote[1].charAt(1) + " on " + currentNote[1].charAt(0) + " is correct!! That's " + currentNote[0].charAt(0).toUpperCase() + "</strong></p>" );
+            $( "#yourGuess" ).append( "<p><strong>Hooray! " + currentNote[1].charAt(1) + " on " + currentNote[1].charAt(0) + " is correct!! <br /> <br />That note is " + currentNote[0].charAt(0).toUpperCase() + "</strong></p>" );
           }
           else {
             alert("that's not quite right - try again");
@@ -150,11 +149,15 @@
   </script>
 </head>
 <body>
+<h3>Click on "Show Note" to start, then check off your answers to guess the note!</h3>
+<p>"Show answer" will show the back of the flashcard if you are stuck.</p>
 <div id="container">
-	<div id='note' class="ui-widget-content"></div>
+	
+  <div id='note' class="ui-widget-content"></div>
 	<div id='yourGuess'></div>
 </div>
 <div class="clearFloat">
+
 	<form>
 	<!-- <form action="#" method="get" id="answerForm" onSubmit="processAnswer()"> -->
   		<!-- <div id="strName"> -->
