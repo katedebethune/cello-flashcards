@@ -69,25 +69,41 @@
 
      /* Radio button Event functions */
 	   $("input:radio[name=stringNameGroup]").click(function() {
-    		currentGuessString = $(this).val();
-    		console.log(currentGuessString);
-    		$( "#yourGuess" ).append( "<p>You guessed the " + currentGuessString + " string</p>" );
-    		return false;
+    		if (!currentGuessString) {
+          currentGuessString = $(this).val();
+      		console.log(currentGuessString);
+      		$( "#yourGuess" ).append( "<p>You guessed the " + currentGuessString + " string</p>" );
+          return false;
+          }
+        else {
+          alert("You already selected a string.");
+        }
     	});
 
 	   $("input:radio[name=fingerNumberGroup]").click(function() {
-    		currentGuessFinger = $(this).val();
-    		console.log(currentGuessFinger);
-    		$( "#yourGuess" ).append( "<p>You guessed " + currentGuessFinger + "</p>" );
-    		return false;
+    		if (!currentGuessFinger) {
+          currentGuessFinger = $(this).val();
+      		console.log(currentGuessFinger);
+      		$( "#yourGuess" ).append( "<p>You guessed " + currentGuessFinger + "</p>" );
+      		return false;
+        }
+        else {
+          alert("You already selected a finger.");
+        }
     	});
 
      $("input:radio[name=noteNameGroup]").click(function() {
-        currentGuessNote = $(this).val();
-        console.log(currentGuessNote);
-        $( "#yourGuess" ).append( "<p>You guessed " + currentGuessNote + "</p>" );
-        assembleGuess();
-        return false;
+        if (!currentGuessNote) {
+          currentGuessNote = $(this).val();
+          console.log(currentGuessNote);
+          $( "#yourGuess" ).append( "<p>You guessed " + currentGuessNote + "</p>" );
+          assembleGuess();
+          return false;
+        }
+        else {
+          alert("You already selected a note");
+        }
+
       });
 
 	
@@ -129,10 +145,18 @@
       compareGuess();
     }
 
+    function clearGuess() {
+      currentGuessString = null;
+      currentGuessFinger = null;
+      currentGuessNote = null;
+    }
+
     function compareGuess() {
         if ( currentGuess ) {
           if (currentGuess.slice(0,2) == currentNote[1] && currentGuess.charAt(2) == currentNote[0].charAt(0)){
             $( "#yourGuess" ).append( "<p><strong>Hooray! " + currentNote[1].charAt(1) + " on " + currentNote[1].charAt(0) + " is correct!! <br /> <br />That note is " + currentNote[0].charAt(0).toUpperCase() + "</strong></p>" );
+            clearGuess();
+
           }
           else {
             alert("that's not quite right - try again");
@@ -140,6 +164,10 @@
             currentGuessFinger = null;
             currentGuessNote = null;
             $( "#yourGuess p" ).empty();
+            $("input:radio[name=stringNameGroup]").attr("checked", false);
+            $("input:radio[name=fingerNumberGroup]").attr("checked", false);
+            $("input:radio[name=noteNameGroup]").attr("checked", false);
+
           }
         }
     } 
@@ -152,7 +180,6 @@
 <h3>Click on "Show Note" to start, then check off your answers to guess the note!</h3>
 <p>"Show answer" will show the back of the flashcard if you are stuck.</p>
 <div id="container">
-	
   <div id='note' class="ui-widget-content"></div>
 	<div id='yourGuess'></div>
 </div>
